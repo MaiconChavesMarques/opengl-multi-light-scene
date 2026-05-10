@@ -1,4 +1,4 @@
-# Projeto 2 - Computação Gráfica
+# Projeto 3 - Computação Gráfica
 
 Cena 3D interativa em OpenGL com múltiplos objetos texturizados, aplicando transformações geométricas (translação, rotação, escala) via teclado.
 
