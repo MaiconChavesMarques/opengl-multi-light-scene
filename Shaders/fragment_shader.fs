@@ -1,6 +1,13 @@
 #version 330 core
 
-uniform vec3 lightPos;
+#define NUM_LIGHTS 3
+
+uniform vec3 lightPos[NUM_LIGHTS];
+uniform vec3 lightColor[NUM_LIGHTS];
+uniform int lightEnvironment[NUM_LIGHTS];
+
+uniform int environment_id;
+
 uniform vec3 viewPos;
 
 uniform vec3 Ka;
@@ -10,35 +17,63 @@ uniform float Ns;
 
 uniform sampler2D imagem;
 
-varying vec2 out_texture;
-varying vec3 out_fragPos;
-varying vec3 out_normal;
+in vec2 out_texture;
+in vec3 out_fragPos;
+in vec3 out_normal;
+
+out vec4 FragColor;
 
 void main()
 {
-    vec3 lightColor = vec3(1.0, 1.0, 1.0);
+    vec4 texColor = texture(imagem, out_texture);
 
-    vec3 ambient = Ka * lightColor;
+    if(texColor.a < 0.1)
+        discard;
 
     vec3 norm = normalize(out_normal);
 
-    vec3 lightDir = normalize(lightPos - out_fragPos);
-
-    float diff = max(dot(norm, lightDir), 0.0);
-
-    vec3 diffuse = Kd * diff * lightColor;
-
     vec3 viewDir = normalize(viewPos - out_fragPos);
 
-    vec3 reflectDir = reflect(-lightDir, norm);
+    vec3 ambient = Ka;
 
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), Ns);
+    vec3 finalDiffuse = vec3(0.0);
+    vec3 finalSpecular = vec3(0.0);
 
-    vec3 specular = Ks * spec * lightColor;
+    for(int i = 0; i < NUM_LIGHTS; i++)
+    {
+        if(lightEnvironment[i] != environment_id && environment_id != 0)
+            continue;
 
-    vec4 texColor = texture(imagem, out_texture);
+        vec3 lightDir = normalize(lightPos[i] - out_fragPos);
 
-    vec3 lighting = ambient + diffuse + specular;
+        float diff = max(dot(norm, lightDir), 0.0);
 
-    gl_FragColor = vec4(lighting, 1.0) * texColor;
+        vec3 diffuse = Kd * diff * lightColor[i];
+
+        vec3 reflectDir = reflect(-lightDir, norm);
+
+        float spec = pow(max(dot(viewDir, reflectDir), 0.0), Ns);
+
+        vec3 specular = Ks * spec * lightColor[i];
+
+        float distance = length(lightPos[i] - out_fragPos);
+
+        distance *= 2.0;
+
+        float attenuation = 1.0 / (
+            1.0 +
+            0.014 * distance +
+            0.0007 * distance * distance
+        );
+
+        diffuse *= attenuation;
+        specular *= attenuation;
+
+        finalDiffuse += diffuse;
+        finalSpecular += specular;
+    }
+
+    vec3 lighting = ambient + finalDiffuse + finalSpecular;
+
+    FragColor = vec4(lighting, 1.0) * texColor;
 }
