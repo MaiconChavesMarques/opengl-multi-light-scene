@@ -1,6 +1,5 @@
-# Projeto 2 - Computação Gráfica
-
-Cena 3D interativa em OpenGL com múltiplos objetos texturizados, aplicando transformações geométricas (translação, rotação, escala) via teclado.
+# Projeto 3 - Computação Gráfica
+Cena 3D interativa em OpenGL com iluminação ambiente, difusa e especular, aplicada a múltiplos objetos texturizados com parâmetros de material individuais.
 
 Dupla:
 - Arthur Trottmann Ramos - 14681052
@@ -10,59 +9,41 @@ Dupla:
 
 ## Objetos da Cena
 
-| Objeto | Descrição |
-|--------|-----------|
-| Barril | Barril de madeira e ferrugem |
-| Cacto01 | Cacto com flores e espinhos |
-| Cacto02 | Cacto com agave e folhas |
-| Cadeira | Cadeira de madeira |
-| Cama | Cama com colchão |
-| Casa | Casa com fachada detalhada |
-| Cavalo | Cavalo com carroça e rodas animadas |
-| Céu | Skybox com textura de céu noturno |
-| Chão | Plano de chão texturizado |
-| Fogueira | Fogueira com carvão e madeira |
-| Jhon | Personagem principal controlável |
-| Lampião | Lampião com vidro e corpo metálico |
-| Mapa | Mapa do tesouro |
-| Mesa | Mesa de madeira |
-| Nuvem/Fumaça | Nuvem com escala animada simulando fumaça |
-| Rifle | Rifle de madeira e metal |
+| Objeto | Ambiente | Descrição |
+|--------|----------|-----------|
+| Barril | Externo | Barril de madeira e ferrugem |
+| Cacto01 | Externo | Cacto com flores e espinhos |
+| Cacto02 | Externo | Cacto com agave e folhas |
+| Cadeira | Interno | Cadeira de madeira |
+| Cama | Interno | Cama com colchão |
+| Casa | Estrutura | Casa com fachada detalhada |
+| Cavalo | Externo | Cavalo com carroça e rodas animadas |
+| Céu | Externo | Skybox com textura de céu noturno |
+| Chão | Externo | Plano de chão texturizado |
+| Jhon (+ Tocha) | Externo | Personagem principal controlável — a **tocha** é a fonte de luz externa (translada junto ao personagem) |
+| Lampião | Interno | Lampião metálico com vidro — fonte de luz interna (branca) |
+| Mapa | Interno | Mapa do tesouro |
+| Mesa | Interno | Mesa de madeira |
+| Rifle | Interno | Rifle de madeira e metal |
+| Vela | Interno | Vela com chama — fonte de luz interna (vermelha) |
+
+---
+
+## Fontes de Luz
+
+| Fonte | Ambiente | Cor | Tecla |
+|-------|----------|-----|-------|
+| Tocha (Jhon) | Externo | Branca | `E` |
+| Vela | Interno | Vermelha | `R` |
+| Lampião | Interno | Branca | `T` |
+
+A tocha translada junto com o personagem Jhon e afeta apenas objetos do ambiente externo. A vela e o lampião afetam apenas objetos do ambiente interno.
 
 ---
 
 ## Controles
 
-### Movimentação do Personagem (Jhon)
-
-| Tecla | Ação |
-|-------|------|
-| `↑` / `↓` | Move Jhon no eixo X |
-| `→` / `←` | Move Jhon no eixo Z |
-
-### Animações
-
-| Tecla | Ação |
-|-------|------|
-| `F` | Gira as rodas da carroça para frente |
-| `G` | Gira as rodas da carroça para trás |
-| `+` (Numpad) | Aumenta a escala da fumaça |
-| `-` (Numpad) | Diminui a escala da fumaça |
-
-### Seleção e Manipulação de Objetos
-
-| Tecla | Ação |
-|-------|------|
-| `[` / `]` | Seleciona o objeto anterior / próximo |
-| `T` | Modo translação |
-| `R` | Modo rotação |
-| `O` | Modo escala |
-| `X` / `Y` / `Z` | Seleciona o eixo de transformação |
-| `↑` / `↓` | Incrementa / decrementa no eixo selecionado |
-| `+` / `-` | Dobra / divide o passo de transformação |
-
 ### Câmera
-
 | Tecla | Ação |
 |-------|------|
 | `W` / `S` | Move a câmera para frente / trás |
@@ -70,12 +51,62 @@ Dupla:
 | Mouse | Orienta a direção da câmera |
 | Scroll | Zoom (campo de visão) |
 
-### Geral
+### Movimentação do Personagem (Jhon)
+| Tecla | Ação |
+|-------|------|
+| `↑` / `↓` | Move Jhon no eixo X |
+| `→` / `←` | Move Jhon no eixo Z |
 
+### Animações
+| Tecla | Ação |
+|-------|------|
+| `F` | Gira as rodas da carroça para frente |
+| `G` | Gira as rodas da carroça para trás |
+
+### Fontes de Luz (Liga/Desliga)
+| Tecla | Ação |
+|-------|------|
+| `E` | Liga / desliga a tocha do Jhon (ambiente externo) |
+| `R` | Liga / desliga a vela (ambiente interno) |
+| `T` | Liga / desliga o lampião (ambiente interno) |
+
+### Tipos de Iluminação (Liga/Desliga)
+| Tecla | Ação |
+|-------|------|
+| `V` | Liga / desliga iluminação ambiente |
+| `B` | Liga / desliga iluminação difusa |
+| `N` | Liga / desliga iluminação especular |
+
+### Parâmetros de Material (todos os objetos)
+| Tecla | Ação |
+|-------|------|
+| `Y` | Incrementa brilho especular (Ns) |
+| `G` | Decrementa brilho especular (Ns) |
+| `U` | Incrementa coeficiente ambiente (Ka) |
+| `H` | Decrementa coeficiente ambiente (Ka) |
+| `I` | Incrementa reflexão difusa (Kd) |
+| `J` | Decrementa reflexão difusa (Kd) |
+| `O` | Incrementa reflexão especular (Ks) |
+| `K` | Decrementa reflexão especular (Ks) |
+
+### Geral
 | Tecla | Ação |
 |-------|------|
 | `P` | Alterna entre modo sólido e wireframe |
+| `X` | Restaura todos os parâmetros ao estado inicial |
 | `ESC` | Fecha a janela |
+
+---
+
+## Iluminação
+
+O modelo de iluminação implementado segue a equação de Phong com três componentes:
+
+- **Ambiente (Ka):** luz global que afeta todos os objetos igualmente.
+- **Difusa (Kd):** reflexão dependente do ângulo entre a normal da superfície e a direção da luz.
+- **Especular (Ks / Ns):** reflexo brilhante dependente do ângulo entre o observador e a direção de reflexão. `Ns` controla a concentração do brilho.
+
+Cada subobjeto possui seus próprios parâmetros `Ka`, `Kd`, `Ks` e `Ns` definidos diretamente no código, sem uso de arquivos `.mtl`. A iluminação é segregada por ambiente via `environment_id`: a tocha afeta apenas objetos externos (id `2`) e a vela/lampião afetam apenas objetos internos (id `1`).
 
 ---
 
@@ -92,20 +123,23 @@ Dupla:
 │   ├── Cavalo/
 │   ├── Ceu/
 │   ├── Chao/
-│   ├── Fogueira/
-│   ├── Jhon/
+│   ├── JMeTocha/
 │   ├── Lampiao/
 │   ├── Mapa/
 │   ├── Mesa/
-│   ├── Nuvem/
-│   └── Rifle/
-└── Trab02CG.ipynb
+│   ├── Rifle/
+│   └── Vela/
+├── Shaders/
+│   ├── shader_s.py
+│   ├── vertex_shader.vs
+│   └── fragment_shader.fs
+└── Trab03CG.ipynb
 ```
 
-Cada pasta contém o arquivo `.obj`, `.mtl` e as texturas (`.png`, `.jpg`, `.jpeg`) do respectivo objeto.
+Cada pasta em `Objetos/` contém o arquivo `.obj` e as texturas (`.png`, `.jpg`, `.jpeg`) do respectivo objeto. Os parâmetros de iluminação de cada material são definidos diretamente no notebook.
 
 ---
 
 ## Como Executar
 
-Abra e execute o notebook `Trab02CG.ipynb` no Jupyter Notebook ou VS Code com o kernel Python configurado.
+Abra e execute o notebook `Trab03CG.ipynb` no Jupyter Notebook ou VS Code com o kernel Python configurado. As dependências necessárias (`glfw`, `pyopengl`, `pyglm`, `numpy`, `pillow`) são instaladas automaticamente na primeira célula.
