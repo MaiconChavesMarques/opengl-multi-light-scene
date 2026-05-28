@@ -57,12 +57,6 @@ A tocha translada junto com o personagem Jhon e afeta apenas objetos do ambiente
 | `↑` / `↓` | Move Jhon no eixo X |
 | `→` / `←` | Move Jhon no eixo Z |
 
-### Animações
-| Tecla | Ação |
-|-------|------|
-| `F` | Gira as rodas da carroça para frente |
-| `G` | Gira as rodas da carroça para trás |
-
 ### Fontes de Luz (Liga/Desliga)
 | Tecla | Ação |
 |-------|------|
@@ -92,7 +86,6 @@ A tocha translada junto com o personagem Jhon e afeta apenas objetos do ambiente
 ### Geral
 | Tecla | Ação |
 |-------|------|
-| `P` | Alterna entre modo sólido e wireframe |
 | `X` | Restaura todos os parâmetros ao estado inicial |
 | `ESC` | Fecha a janela |
 
