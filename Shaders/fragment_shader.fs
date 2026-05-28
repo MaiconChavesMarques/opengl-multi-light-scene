@@ -17,6 +17,12 @@ uniform float Ns;
 
 uniform sampler2D imagem;
 
+// Vetor de booleanos:
+// [0] = ambiente
+// [1] = difusa
+// [2] = especular
+uniform bool enabledLightTypes[3];
+
 in vec2 out_texture;
 in vec3 out_fragPos;
 in vec3 out_normal;
@@ -34,7 +40,10 @@ void main()
 
     vec3 viewDir = normalize(viewPos - out_fragPos);
 
-    vec3 ambient = Ka;
+    vec3 ambient = vec3(0.0);
+
+    if(enabledLightTypes[0])
+        ambient = Ka;
 
     vec3 finalDiffuse = vec3(0.0);
     vec3 finalSpecular = vec3(0.0);
@@ -46,16 +55,6 @@ void main()
 
         vec3 lightDir = normalize(lightPos[i] - out_fragPos);
 
-        float diff = max(dot(norm, lightDir), 0.0);
-
-        vec3 diffuse = Kd * diff * lightColor[i];
-
-        vec3 reflectDir = reflect(-lightDir, norm);
-
-        float spec = pow(max(dot(viewDir, reflectDir), 0.0), Ns);
-
-        vec3 specular = Ks * spec * lightColor[i];
-
         float distance = length(lightPos[i] - out_fragPos);
 
         distance *= 2.0;
@@ -66,11 +65,31 @@ void main()
             0.0007 * distance * distance
         );
 
-        diffuse *= attenuation;
-        specular *= attenuation;
+        // Difusa
+        if(enabledLightTypes[1])
+        {
+            float diff = max(dot(norm, lightDir), 0.0);
 
-        finalDiffuse += diffuse;
-        finalSpecular += specular;
+            vec3 diffuse = Kd * diff * lightColor[i];
+
+            diffuse *= attenuation;
+
+            finalDiffuse += diffuse;
+        }
+
+        // Especular
+        if(enabledLightTypes[2])
+        {
+            vec3 reflectDir = reflect(-lightDir, norm);
+
+            float spec = pow(max(dot(viewDir, reflectDir), 0.0), Ns);
+
+            vec3 specular = Ks * spec * lightColor[i];
+
+            specular *= attenuation;
+
+            finalSpecular += specular;
+        }
     }
 
     vec3 lighting = ambient + finalDiffuse + finalSpecular;
