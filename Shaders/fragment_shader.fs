@@ -50,7 +50,16 @@ void main()
 
     for(int i = 0; i < NUM_LIGHTS; i++)
     {
+        if(lightEnvironment[i] < 0)
+            continue;
+
         if(lightEnvironment[i] != environment_id && environment_id != 0)
+            continue;
+
+        if(lightEnvironment[i] == 2 && !gl_FrontFacing)
+            continue;
+        
+        if(lightEnvironment[i] == 1 && gl_FrontFacing)
             continue;
 
         vec3 lightDir = normalize(lightPos[i] - out_fragPos);
