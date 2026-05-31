@@ -99,7 +99,7 @@ O modelo de iluminação implementado segue a equação de Phong com três compo
 - **Difusa (Kd):** reflexão dependente do ângulo entre a normal da superfície e a direção da luz.
 - **Especular (Ks / Ns):** reflexo brilhante dependente do ângulo entre o observador e a direção de reflexão. `Ns` controla a concentração do brilho.
 
-Cada subobjeto possui seus próprios parâmetros `Ka`, `Kd`, `Ks` e `Ns` definidos diretamente no código, sem uso de arquivos `.mtl`. A iluminação é segregada por ambiente via `environment_id`: a tocha afeta apenas objetos externos (id `2`) e a vela/lampião afetam apenas objetos internos (id `1`).
+Cada subobjeto possui seus próprios parâmetros `Ka`, `Kd`, `Ks` e `Ns` definidos diretamente no código, sem uso de arquivos `.mtl`. A iluminação é segregada por ambiente via `environment_id`: a tocha afeta apenas objetos externos (id `2`) e a vela/lampião afetam apenas objetos internos (id `1`). Também há o uso de gl_FrontFacing no fragment_shader.fs.
 
 ---
 
