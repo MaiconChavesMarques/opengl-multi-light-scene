@@ -52,15 +52,38 @@ void main()
     {
         if(lightEnvironment[i] < 0)
             continue;
+        //Desliga a luz
 
         if(lightEnvironment[i] != environment_id && environment_id != 0)
             continue;
+        //Se for objetos de ambientes diferentes, não se iluminam. Exceto a casa que pertence aos dois
 
         if(lightEnvironment[i] == 2 && !gl_FrontFacing)
             continue;
-        
-        if(lightEnvironment[i] == 1 && gl_FrontFacing)
+        //A luz de fora não ilumina o ambiente interno que tem gl_FrontFacing == False
+
+        if(lightEnvironment[i] == 1 && gl_FrontFacing && environment_id > 1)
             continue;
+        //A luz de dentro não ilumina o abiente externo que tem gl_FrontFacing == True. Objetos internos (1) também tem gl_FrontFacing == True então isso não vale para eles.
+
+        if(environment_id == 0 && lightEnvironment[i] == 2)
+        {
+            vec3 originPos = vec3(-24.0, 11.7, 2.0);
+
+            float originSide = dot(
+                norm,
+                originPos - out_fragPos
+            );
+
+            float lightSide = dot(
+                norm,
+                lightPos[i] - out_fragPos
+            );
+
+            if(originSide * lightSide > 0.0)
+                continue;
+        }
+        //Itens da casa que são dos dois ambientes, não serão iluminadas por objetos de fora que estejam do mesmo lado da origem (Centro da casa).
 
         vec3 lightDir = normalize(lightPos[i] - out_fragPos);
 
